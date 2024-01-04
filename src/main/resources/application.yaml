@@ -18,3 +18,12 @@ spring:
         format_sql: true
   liquibase:
     enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework: ERROR
+    dev.shulika.restapiexample: INFO
+  file:
+    path: './'
+    name: ${logging.file.path}/rest-api-example.log
