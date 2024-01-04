@@ -34,7 +34,7 @@ public class Task {
     private Person author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "person_id")
+    @JoinColumn(name = "executor_id")
     private Person executor;
 
 }
