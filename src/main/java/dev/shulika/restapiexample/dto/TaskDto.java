@@ -4,12 +4,15 @@ import dev.shulika.restapiexample.model.Priority;
 import dev.shulika.restapiexample.model.Status;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-import lombok.Value;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
 
-@Value
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TaskDto implements Serializable {
 
     @NotBlank(message = "Title is mandatory")
