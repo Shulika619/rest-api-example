@@ -23,7 +23,7 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
-    
+
     @Override
     public Page<PersonDto> findAll(Pageable pageable) {
         log.info("IN PersonServiceImpl - findAll() - STARTED");
@@ -71,4 +71,5 @@ public class PersonServiceImpl implements PersonService {
         }
         personRepository.deleteById(id);
     }
+
 }
