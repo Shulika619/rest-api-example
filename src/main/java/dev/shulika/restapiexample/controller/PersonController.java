@@ -36,9 +36,7 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> delete(
-            @Valid @PathVariable Long id,
-            @Valid @RequestBody PersonDto personDto) {
+    public ResponseEntity<Person> update(@Valid @PathVariable Long id, @Valid @RequestBody PersonDto personDto) {
         Person person = personService.updateById(id, personDto);
         return new ResponseEntity<>(person, HttpStatus.OK);
     }
