@@ -27,7 +27,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorsList, HttpStatus.BAD_REQUEST);
     }
 
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
         log.error("IN GlobalExceptionHandler - NotFoundException - Message - {}", exception.getMessage());
