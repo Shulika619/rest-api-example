@@ -1,7 +1,9 @@
 package dev.shulika.restapiexample.service.impl;
 
+import dev.shulika.restapiexample.dto.TaskExecutorRequestDto;
 import dev.shulika.restapiexample.dto.TaskRequestDto;
 import dev.shulika.restapiexample.dto.TaskResponseDto;
+import dev.shulika.restapiexample.dto.TaskStatusRequestDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.TaskMapper;
 import dev.shulika.restapiexample.model.Person;
@@ -64,6 +66,32 @@ public class TaskServiceImpl implements TaskService {
         Task savedTask = taskRepository.save(task);
         return taskMapper.toDto(savedTask);
     }
+
+    @Override
+    public TaskResponseDto updateStatusById(Long id, TaskStatusRequestDto taskStatusRequestDto) {
+        log.info("IN TaskServiceImpl - updateStatusById() - STARTED");
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
+
+        task.setStatus(taskStatusRequestDto.getStatus());
+        Task savedTask = taskRepository.save(task);
+        return taskMapper.toDto(savedTask);
+    }
+
+    @Override
+    public TaskResponseDto updateExecutorById(Long id, TaskExecutorRequestDto taskExecutorRequestDto) {
+        log.info("IN TaskServiceImpl - updateExecutorById() - STARTED");
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
+
+        Person person = new Person();
+        person.setId(taskExecutorRequestDto.getExecutorId());
+        task.setExecutor(person);
+
+        Task savedTask = taskRepository.save(task);
+        return taskMapper.toDto(savedTask);
+    }
+
 
     @Override
     public void deleteById(Long id) {

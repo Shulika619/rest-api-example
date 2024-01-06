@@ -1,7 +1,9 @@
 package dev.shulika.restapiexample.controller;
 
+import dev.shulika.restapiexample.dto.TaskExecutorRequestDto;
 import dev.shulika.restapiexample.dto.TaskRequestDto;
 import dev.shulika.restapiexample.dto.TaskResponseDto;
+import dev.shulika.restapiexample.dto.TaskStatusRequestDto;
 import dev.shulika.restapiexample.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +43,24 @@ public class TaskController {
             @Valid @RequestBody TaskRequestDto taskRequestDto
     ) {
         TaskResponseDto taskResponseDto = taskService.updateById(id, taskRequestDto);
+        return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<TaskResponseDto> updateStatus(
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody TaskStatusRequestDto taskStatusRequestDto
+    ) {
+        TaskResponseDto taskResponseDto = taskService.updateStatusById(id, taskStatusRequestDto);
+        return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/executor")
+    public ResponseEntity<TaskResponseDto> updateExecutor(
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody TaskExecutorRequestDto taskExecutorRequestDto
+    ) {
+        TaskResponseDto taskResponseDto = taskService.updateExecutorById(id, taskExecutorRequestDto);
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
