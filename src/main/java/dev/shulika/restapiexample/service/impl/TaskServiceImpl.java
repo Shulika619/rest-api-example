@@ -42,6 +42,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public Page<TaskResponseDto> findByAuthor(Long personId, Pageable pageable) {
+        log.info("IN TaskServiceImpl - findByAuthor() - STARTED");
+        Page<Task> taskPage = taskRepository.findByAuthorId(personId, pageable);
+        return taskPage.map(taskMapper::toDto);
+    }
+
+    @Override
+    public Page<TaskResponseDto> findByExecutor(Long personId, Pageable pageable) {
+        log.info("IN TaskServiceImpl - findByExecutor() - STARTED");
+        Page<Task> taskPage = taskRepository.findByExecutorId(personId, pageable);
+        return taskPage.map(taskMapper::toDto);
+    }
+
+    @Override
     public TaskResponseDto create(TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - create() - STARTED");
         Task task = taskRepository.save(taskMapper.toEntity(taskRequestDto));

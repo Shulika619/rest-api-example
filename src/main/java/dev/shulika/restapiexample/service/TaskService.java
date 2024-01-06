@@ -13,6 +13,10 @@ public interface TaskService {
 
     TaskResponseDto findById(Long id);
 
+    Page<TaskResponseDto> findByAuthor(Long personId, Pageable pageable);
+
+    Page<TaskResponseDto> findByExecutor(Long personId, Pageable pageable);
+
     TaskResponseDto create(TaskRequestDto taskRequestDto);
 
     TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto);

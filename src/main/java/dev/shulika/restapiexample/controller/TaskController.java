@@ -31,6 +31,16 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/author/{personId}")
+    public Page<TaskResponseDto> getByAuthorId(@Valid @PathVariable Long personId, Pageable pageable) {
+        return taskService.findByAuthor(personId, pageable);
+    }
+
+    @GetMapping("/executor/{personId}")
+    public Page<TaskResponseDto> getByExecutorId(@Valid @PathVariable Long personId, Pageable pageable) {
+        return taskService.findByExecutor(personId, pageable);
+    }
+
     @PostMapping
     public ResponseEntity<TaskResponseDto> create(@Valid @RequestBody TaskRequestDto taskRequestDto) {
         TaskResponseDto taskResponseDto = taskService.create(taskRequestDto);
