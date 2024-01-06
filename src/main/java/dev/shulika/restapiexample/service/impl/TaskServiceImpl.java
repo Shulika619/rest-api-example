@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.TaskDto;
+import dev.shulika.restapiexample.dto.TaskRequestDto;
+import dev.shulika.restapiexample.dto.TaskResponseDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.TaskMapper;
 import dev.shulika.restapiexample.model.Person;
@@ -24,14 +25,14 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
 
     @Override
-    public Page<TaskDto> findAll(Pageable pageable) {
+    public Page<TaskResponseDto> findAll(Pageable pageable) {
         log.info("IN TaskServiceImpl - findAll() - STARTED");
         Page<Task> taskPage = taskRepository.findAll(pageable);
         return taskPage.map(taskMapper::toDto);
     }
 
     @Override
-    public TaskDto findById(Long id) {
+    public TaskResponseDto findById(Long id) {
         log.info("IN TaskServiceImpl - findById() - STARTED");
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task not found! id: " + id));
@@ -40,32 +41,30 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(readOnly = false)
-    public Task create(TaskDto taskDto) {
+    public TaskResponseDto create(TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - create() - STARTED");
-        return taskRepository.save(taskMapper.toEntity(taskDto));
+        Task task = taskRepository.save(taskMapper.toEntity(taskRequestDto));
+        return taskMapper.toDto(task);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Task updateById(Long id, TaskDto taskDto) {
+    public TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - updateById() - STARTED");
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Task not found! id: " + id));
 
-        task.setTitle(taskDto.getTitle());
-        task.setDescription(taskDto.getDescription());
-        task.setStatus(taskDto.getStatus());
-        task.setPriority(taskDto.getPriority());
+        task.setTitle(taskRequestDto.getTitle());
+        task.setDescription(taskRequestDto.getDescription());
+        task.setStatus(taskRequestDto.getStatus());
+        task.setPriority(taskRequestDto.getPriority());
 
         Person author = new Person();
-        author.setId(taskDto.getAuthorId());
+        author.setId(taskRequestDto.getAuthorId());
         task.setAuthor(author);
 
-        Person executor = new Person();
-        executor.setId(taskDto.getExecutorId());
-        task.setExecutor(executor);
-
-        return taskRepository.save(task);
+        Task savedTask = taskRepository.save(task);
+        return taskMapper.toDto(savedTask);
     }
 
     @Override

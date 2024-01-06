@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TaskDto implements Serializable {
+public class TaskRequestDto implements Serializable {
 
     @NotBlank(message = "Title is mandatory")
     @Length(min = 3, max = 255, message = "Title must be from 3 to 255")
@@ -36,9 +36,5 @@ public class TaskDto implements Serializable {
     @NotNull(message = "Author id is mandatory")
     @Positive(message = "Author id must be positive Long")
     Long authorId;
-
-    @NotNull(message = "Executor id is mandatory")
-    @Positive(message = "Executor id must be positive Long")
-    Long executorId;
 
 }

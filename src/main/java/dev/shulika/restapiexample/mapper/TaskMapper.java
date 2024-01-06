@@ -1,24 +1,21 @@
 package dev.shulika.restapiexample.mapper;
 
-import dev.shulika.restapiexample.dto.TaskDto;
+import dev.shulika.restapiexample.dto.TaskRequestDto;
+import dev.shulika.restapiexample.dto.TaskResponseDto;
 import dev.shulika.restapiexample.model.Task;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface TaskMapper {
 
     @Mapping(source = "authorId", target = "author.id")
-    @Mapping(source = "executorId", target = "executor.id")
-    Task toEntity(TaskDto taskDto);
+    Task toEntity(TaskRequestDto taskRequestDto);
 
     @Mapping(source = "author.id", target = "authorId")
-    @Mapping(source = "executor.id", target = "executorId")
-    TaskDto toDto(Task task);
-
-    @Mapping(source = "authorId", target = "author.id")
-    @Mapping(source = "executorId", target = "executor.id")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Task partialUpdate(TaskDto taskDto, @MappingTarget Task task);
+    TaskResponseDto toDto(Task task);
 
 }

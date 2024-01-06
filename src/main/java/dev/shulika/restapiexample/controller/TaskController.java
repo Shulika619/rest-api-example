@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.controller;
 
-import dev.shulika.restapiexample.dto.TaskDto;
-import dev.shulika.restapiexample.model.Task;
+import dev.shulika.restapiexample.dto.TaskRequestDto;
+import dev.shulika.restapiexample.dto.TaskResponseDto;
 import dev.shulika.restapiexample.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,26 +19,29 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public Page<TaskDto> getAll(Pageable pageable) {
+    public Page<TaskResponseDto> getAll(Pageable pageable) {
         return taskService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskDto> getById(@Valid @PathVariable Long id) {
-        TaskDto taskDto = taskService.findById(id);
-        return new ResponseEntity<>(taskDto, HttpStatus.OK);
+    public ResponseEntity<TaskResponseDto> getById(@Valid @PathVariable Long id) {
+        TaskResponseDto taskResponseDto = taskService.findById(id);
+        return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Task> create(@Valid @RequestBody TaskDto taskDto) {
-        Task task = taskService.create(taskDto);
-        return new ResponseEntity<>(task, HttpStatus.CREATED);
+    public ResponseEntity<TaskResponseDto> create(@Valid @RequestBody TaskRequestDto taskRequestDto) {
+        TaskResponseDto taskResponseDto = taskService.create(taskRequestDto);
+        return new ResponseEntity<>(taskResponseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Task> update(@Valid @PathVariable Long id, @Valid @RequestBody TaskDto taskDto) {
-        Task task = taskService.updateById(id, taskDto);
-        return new ResponseEntity<>(task, HttpStatus.OK);
+    public ResponseEntity<TaskResponseDto> update(
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody TaskRequestDto taskRequestDto
+    ) {
+        TaskResponseDto taskResponseDto = taskService.updateById(id, taskRequestDto);
+        return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

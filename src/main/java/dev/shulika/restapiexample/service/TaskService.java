@@ -1,19 +1,19 @@
 package dev.shulika.restapiexample.service;
 
-import dev.shulika.restapiexample.dto.TaskDto;
-import dev.shulika.restapiexample.model.Task;
+import dev.shulika.restapiexample.dto.TaskRequestDto;
+import dev.shulika.restapiexample.dto.TaskResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface TaskService {
 
-    Page<TaskDto> findAll(Pageable pageable);
+    Page<TaskResponseDto> findAll(Pageable pageable);
 
-    TaskDto findById(Long id);
+    TaskResponseDto findById(Long id);
 
-    Task create(TaskDto taskDto);
+    TaskResponseDto create(TaskRequestDto taskRequestDto);
 
-    Task updateById(Long id, TaskDto taskDto);
+    TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto);
 
     void deleteById(Long id);
 
