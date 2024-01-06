@@ -14,8 +14,11 @@ import java.io.Serializable;
 public class PersonResponseDto implements Serializable {
 
     Long id;
+
     String firstName;
+
     String lastName;
+
     String email;
 
 }

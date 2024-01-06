@@ -63,8 +63,8 @@ public class PersonServiceImpl implements PersonService {
         person.setEmail(personRequestDto.getEmail());
         person.setPassword(personRequestDto.getPassword());
 
-        var result = personRepository.save(person);
-        return personMapper.toDto(result);
+        Person savedPerson = personRepository.save(person);
+        return personMapper.toDto(savedPerson);
     }
 
     @Override
