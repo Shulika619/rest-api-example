@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.CommentDto;
+import dev.shulika.restapiexample.dto.CommentRequestDto;
+import dev.shulika.restapiexample.dto.CommentResponseDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.CommentMapper;
 import dev.shulika.restapiexample.model.Comment;
@@ -24,14 +25,14 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
 
     @Override
-    public Page<CommentDto> findAll(Pageable pageable) {
+    public Page<CommentResponseDto> findAll(Pageable pageable) {
         log.info("IN CommentServiceImpl - findAll() - STARTED");
         Page<Comment> commentPage = commentRepository.findAll(pageable);
         return commentPage.map(commentMapper::toDto);
     }
 
     @Override
-    public CommentDto findById(Long id) {
+    public CommentResponseDto findById(Long id) {
         log.info("IN CommentServiceImpl - findById() - STARTED");
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Comment not found! id: " + id));
@@ -40,24 +41,26 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(readOnly = false)
-    public Comment create(CommentDto commentDto) {
+    public CommentResponseDto create(CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - create() - STARTED");
-        return commentRepository.save(commentMapper.toEntity(commentDto));
+        Comment savedComment = commentRepository.save(commentMapper.toEntity(commentRequestDto));
+        return commentMapper.toDto(savedComment);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Comment updateById(Long id, CommentDto commentDto) {
+    public CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - updateById() - STARTED");
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Comment not found! id: " + id));
 
-        comment.setText(commentDto.getText());
+        comment.setText(commentRequestDto.getText());
         Task task = new Task();
-        task.setId(commentDto.getTaskId());
+        task.setId(commentRequestDto.getTaskId());
         comment.setTask(task);
 
-        return commentRepository.save(comment);
+        Comment savedComment = commentRepository.save(comment);
+        return commentMapper.toDto(savedComment);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.controller;
 
-import dev.shulika.restapiexample.dto.CommentDto;
-import dev.shulika.restapiexample.model.Comment;
+import dev.shulika.restapiexample.dto.CommentRequestDto;
+import dev.shulika.restapiexample.dto.CommentResponseDto;
 import dev.shulika.restapiexample.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,26 +19,26 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    public Page<CommentDto> getAll(Pageable pageable) {
+    public Page<CommentResponseDto> getAll(Pageable pageable) {
         return commentService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentDto> getById(@Valid @PathVariable Long id) {
-        CommentDto commentDto = commentService.findById(id);
-        return new ResponseEntity<>(commentDto, HttpStatus.OK);
+    public ResponseEntity<CommentResponseDto> getById(@Valid @PathVariable Long id) {
+        CommentResponseDto commentResponseDto = commentService.findById(id);
+        return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Comment> create(@Valid @RequestBody CommentDto commentDto) {
-        Comment comment = commentService.create(commentDto);
-        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+    public ResponseEntity<CommentResponseDto> create(@Valid @RequestBody CommentRequestDto commentRequestDto) {
+        CommentResponseDto commentResponseDto = commentService.create(commentRequestDto);
+        return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Comment> update(@Valid @PathVariable Long id, @Valid @RequestBody CommentDto commentDto) {
-        Comment comment = commentService.updateById(id, commentDto);
-        return new ResponseEntity<>(comment, HttpStatus.OK);
+    public ResponseEntity<CommentResponseDto> update(@Valid @PathVariable Long id, @Valid @RequestBody CommentRequestDto commentRequestDto) {
+        CommentResponseDto commentResponseDto = commentService.updateById(id, commentRequestDto);
+        return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

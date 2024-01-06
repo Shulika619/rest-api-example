@@ -1,19 +1,19 @@
 package dev.shulika.restapiexample.service;
 
-import dev.shulika.restapiexample.dto.CommentDto;
-import dev.shulika.restapiexample.model.Comment;
+import dev.shulika.restapiexample.dto.CommentRequestDto;
+import dev.shulika.restapiexample.dto.CommentResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface CommentService {
 
-    Page<CommentDto> findAll(Pageable pageable);
+    Page<CommentResponseDto> findAll(Pageable pageable);
 
-    CommentDto findById(Long id);
+    CommentResponseDto findById(Long id);
 
-    Comment create(CommentDto commentDto);
+    CommentResponseDto create(CommentRequestDto commentRequestDto);
 
-    Comment updateById(Long id, CommentDto commentDto);
+    CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto);
 
     void deleteById(Long id);
 

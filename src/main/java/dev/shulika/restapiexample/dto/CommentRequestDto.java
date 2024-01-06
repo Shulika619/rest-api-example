@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto implements Serializable {
+public class CommentRequestDto implements Serializable {
 
     @NotBlank(message = "Text is mandatory")
     @Length(min = 1, max = 1024, message = "Text must be from 1 to 1024")
