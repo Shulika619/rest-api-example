@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.PersonDto;
+import dev.shulika.restapiexample.dto.PersonRequestDto;
+import dev.shulika.restapiexample.dto.PersonResponseDto;
 import dev.shulika.restapiexample.exception.AlreadyExistsException;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.PersonMapper;
@@ -25,14 +26,14 @@ public class PersonServiceImpl implements PersonService {
     private final PersonMapper personMapper;
 
     @Override
-    public Page<PersonDto> findAll(Pageable pageable) {
+    public Page<PersonResponseDto> findAll(Pageable pageable) {
         log.info("IN PersonServiceImpl - findAll() - STARTED");
         Page<Person> personPage = personRepository.findAll(pageable);
         return personPage.map(personMapper::toDto);
     }
 
     @Override
-    public PersonDto findById(Long id) {
+    public PersonResponseDto findById(Long id) {
         log.info("IN PersonServiceImpl - findById() - STARTED");
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Person not found! id: " + id));
@@ -41,25 +42,29 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     @Transactional(readOnly = false)
-    public Person create(PersonDto personDto) {
+    public PersonResponseDto create(PersonRequestDto personRequestDto) {
         log.info("IN PersonServiceImpl - create() - STARTED");
-        if (personRepository.existsByEmailAllIgnoreCase(personDto.getEmail())) {
-            throw new AlreadyExistsException("Person already exist! email: " + personDto.getEmail());
+        if (personRepository.existsByEmailAllIgnoreCase(personRequestDto.getEmail())) {
+            throw new AlreadyExistsException("Person already exist! email: " + personRequestDto.getEmail());
         }
-        return personRepository.save(personMapper.toEntity(personDto));
+        Person result = personRepository.save(personMapper.toEntity(personRequestDto));
+        return personMapper.toDto(result);
     }
 
     @Override
     @Transactional(readOnly = false)
-    public Person updateById(Long id, PersonDto personDto) {
+    public PersonResponseDto updateById(Long id, PersonRequestDto personRequestDto) {
         log.info("IN PersonServiceImpl - updateById() - STARTED");
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Person not found! id: " + id));
-        person.setFirstName(personDto.getFirstName());
-        person.setLastName(personDto.getLastName());
-        person.setEmail(personDto.getEmail());
-        person.setPassword(personDto.getPassword());
-        return personRepository.save(person);
+
+        person.setFirstName(personRequestDto.getFirstName());
+        person.setLastName(personRequestDto.getLastName());
+        person.setEmail(personRequestDto.getEmail());
+        person.setPassword(personRequestDto.getPassword());
+
+        var result = personRepository.save(person);
+        return personMapper.toDto(result);
     }
 
     @Override

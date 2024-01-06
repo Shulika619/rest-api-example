@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.controller;
 
-import dev.shulika.restapiexample.dto.PersonDto;
-import dev.shulika.restapiexample.model.Person;
+import dev.shulika.restapiexample.dto.PersonRequestDto;
+import dev.shulika.restapiexample.dto.PersonResponseDto;
 import dev.shulika.restapiexample.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,26 +19,27 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping
-    public Page<PersonDto> getAll(Pageable pageable) {
+    public Page<PersonResponseDto> getAll(Pageable pageable) {
         return personService.findAll(pageable);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PersonDto> getById(@Valid @PathVariable Long id) {
-        PersonDto personDto = personService.findById(id);
-        return new ResponseEntity<>(personDto, HttpStatus.OK);
+    public ResponseEntity<PersonResponseDto> getById(@Valid @PathVariable Long id) {
+        PersonResponseDto personRequestDto = personService.findById(id);
+        return new ResponseEntity<>(personRequestDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Person> create(@Valid @RequestBody PersonDto personDto) {
-        Person person = personService.create(personDto);
-        return new ResponseEntity<>(person, HttpStatus.CREATED);
+    public ResponseEntity<PersonResponseDto> create(@Valid @RequestBody PersonRequestDto personRequestDto) {
+        PersonResponseDto personResponseDto = personService.create(personRequestDto);
+        return new ResponseEntity<>(personResponseDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> update(@Valid @PathVariable Long id, @Valid @RequestBody PersonDto personDto) {
-        Person person = personService.updateById(id, personDto);
-        return new ResponseEntity<>(person, HttpStatus.OK);
+    public ResponseEntity<PersonResponseDto> update(@Valid @PathVariable Long id,
+            @Valid @RequestBody PersonRequestDto personRequestDto) {
+        PersonResponseDto personResponseDto = personService.updateById(id, personRequestDto);
+        return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -2,7 +2,10 @@ package dev.shulika.restapiexample.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
@@ -11,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PersonDto implements Serializable {
+public class PersonRequestDto implements Serializable {
 
     @NotBlank(message = "First name is mandatory")
     @Length(min = 3, max = 25, message = "First name must be from 3 to 25")
