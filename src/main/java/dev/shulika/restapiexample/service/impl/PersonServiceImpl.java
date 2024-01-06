@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_EXIST;
+import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND;
 
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class PersonServiceImpl implements PersonService {
@@ -36,27 +37,25 @@ public class PersonServiceImpl implements PersonService {
     public PersonResponseDto findById(Long id) {
         log.info("IN PersonServiceImpl - findById() - STARTED");
         Person person = personRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Person not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
         return personMapper.toDto(person);
     }
 
     @Override
-    @Transactional(readOnly = false)
     public PersonResponseDto create(PersonRequestDto personRequestDto) {
         log.info("IN PersonServiceImpl - create() - STARTED");
         if (personRepository.existsByEmailAllIgnoreCase(personRequestDto.getEmail())) {
-            throw new AlreadyExistsException("Person already exist! email: " + personRequestDto.getEmail());
+            throw new AlreadyExistsException(PERSON_EXIST + personRequestDto.getEmail());
         }
         Person result = personRepository.save(personMapper.toEntity(personRequestDto));
         return personMapper.toDto(result);
     }
 
     @Override
-    @Transactional(readOnly = false)
     public PersonResponseDto updateById(Long id, PersonRequestDto personRequestDto) {
         log.info("IN PersonServiceImpl - updateById() - STARTED");
         Person person = personRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Person not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
 
         person.setFirstName(personRequestDto.getFirstName());
         person.setLastName(personRequestDto.getLastName());
@@ -68,11 +67,10 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void deleteById(Long id) {
         log.info("IN PersonServiceImpl - deleteById() - STARTED");
         if (!personRepository.existsById(id)) {
-            throw new NotFoundException("Person not found! id: " + id);
+            throw new NotFoundException(PERSON_NOT_FOUND + id);
         }
         personRepository.deleteById(id);
     }

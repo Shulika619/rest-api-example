@@ -13,10 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import static dev.shulika.restapiexample.constant.ServiceConst.COMMENT_NOT_FOUND;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class CommentServiceImpl implements CommentService {
@@ -35,12 +35,11 @@ public class CommentServiceImpl implements CommentService {
     public CommentResponseDto findById(Long id) {
         log.info("IN CommentServiceImpl - findById() - STARTED");
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Comment not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND + id));
         return commentMapper.toDto(comment);
     }
 
     @Override
-    @Transactional(readOnly = false)
     public CommentResponseDto create(CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - create() - STARTED");
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentRequestDto));
@@ -48,11 +47,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - updateById() - STARTED");
         Comment comment = commentRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Comment not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND + id));
 
         comment.setText(commentRequestDto.getText());
         Task task = new Task();
@@ -64,11 +62,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void deleteById(Long id) {
         log.info("IN CommentServiceImpl - deleteById() - STARTED");
         if (!commentRepository.existsById(id)) {
-            throw new NotFoundException("Comment not found! id: " + id);
+            throw new NotFoundException(COMMENT_NOT_FOUND + id);
         }
         commentRepository.deleteById(id);
     }

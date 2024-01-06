@@ -13,10 +13,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import static dev.shulika.restapiexample.constant.ServiceConst.TASK_NOT_FOUND;
 
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
 @Slf4j
 public class TaskServiceImpl implements TaskService {
@@ -35,12 +35,11 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseDto findById(Long id) {
         log.info("IN TaskServiceImpl - findById() - STARTED");
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
         return taskMapper.toDto(task);
     }
 
     @Override
-    @Transactional(readOnly = false)
     public TaskResponseDto create(TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - create() - STARTED");
         Task task = taskRepository.save(taskMapper.toEntity(taskRequestDto));
@@ -48,11 +47,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - updateById() - STARTED");
         Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Task not found! id: " + id));
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
 
         task.setTitle(taskRequestDto.getTitle());
         task.setDescription(taskRequestDto.getDescription());
@@ -68,11 +66,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void deleteById(Long id) {
         log.info("IN TaskServiceImpl - deleteById() - STARTED");
         if (!taskRepository.existsById(id)) {
-            throw new NotFoundException("Task not found! id: " + id);
+            throw new NotFoundException(TASK_NOT_FOUND + id);
         }
         taskRepository.deleteById(id);
     }

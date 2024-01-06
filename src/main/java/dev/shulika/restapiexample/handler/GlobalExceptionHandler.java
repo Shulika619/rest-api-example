@@ -18,13 +18,11 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<List<String>> handleValidException(MethodArgumentNotValidException exception) {
         log.error("IN GlobalExceptionHandler - MethodArgumentNotValidException - Message - {}", exception.getMessage());
         List<String> errorsList = new ArrayList<>();
         exception.getBindingResult().getFieldErrors()
-                .forEach(error -> {
-                    errorsList.add(error.getField() + " : " + error.getDefaultMessage());
-                });
+                .forEach(error -> errorsList.add(error.getField() + " : " + error.getDefaultMessage()));
         return new ResponseEntity<>(errorsList, HttpStatus.BAD_REQUEST);
     }
 
@@ -43,7 +41,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleAlreadyExistsException(DataIntegrityViolationException exception) {
         log.error("IN GlobalExceptionHandler - DataIntegrityViolationException - Message - {}", exception.getMessage());
-        return new ResponseEntity<>(exception.getMostSpecificCause().getMessage().toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(exception.getMostSpecificCause().getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
