@@ -29,6 +29,11 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/task/{taskId}")
+    public Page<CommentResponseDto> getById(@Valid @PathVariable Long taskId, Pageable pageable) {
+        return commentService.findByTaskId(taskId, pageable);
+    }
+
     @PostMapping
     public ResponseEntity<CommentResponseDto> create(@Valid @RequestBody CommentRequestDto commentRequestDto) {
         CommentResponseDto commentResponseDto = commentService.create(commentRequestDto);

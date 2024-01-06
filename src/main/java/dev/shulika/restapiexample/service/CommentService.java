@@ -11,6 +11,8 @@ public interface CommentService {
 
     CommentResponseDto findById(Long id);
 
+    Page<CommentResponseDto> findByTaskId(Long taskId, Pageable pageable);
+
     CommentResponseDto create(CommentRequestDto commentRequestDto);
 
     CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto);

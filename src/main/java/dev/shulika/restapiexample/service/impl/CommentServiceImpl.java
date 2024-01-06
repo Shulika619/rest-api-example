@@ -40,6 +40,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public Page<CommentResponseDto> findByTaskId(Long taskId, Pageable pageable) {
+        log.info("IN CommentServiceImpl - findByTask() - STARTED");
+        Page<Comment> commentPage = commentRepository.findByTaskId(taskId, pageable);
+        return commentPage.map(commentMapper::toDto);
+    }
+
+    @Override
     public CommentResponseDto create(CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - create() - STARTED");
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentRequestDto));
