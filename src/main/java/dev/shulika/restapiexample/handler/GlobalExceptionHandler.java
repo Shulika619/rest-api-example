@@ -3,6 +3,7 @@ package dev.shulika.restapiexample.handler;
 import dev.shulika.restapiexample.exception.AlreadyExistsException;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,6 +38,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException exception) {
         log.error("IN GlobalExceptionHandler - AlreadyExistsException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleAlreadyExistsException(DataIntegrityViolationException exception) {
+        log.error("IN GlobalExceptionHandler - DataIntegrityViolationException - Message - {}", exception.getMessage());
+        return new ResponseEntity<>(exception.getMostSpecificCause().getMessage().toString(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
