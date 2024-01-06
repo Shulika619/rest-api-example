@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.mapper;
 
-import dev.shulika.restapiexample.dto.CommentRequestDto;
-import dev.shulika.restapiexample.dto.CommentResponseDto;
+import dev.shulika.restapiexample.dto.comment.CommentRequestDto;
+import dev.shulika.restapiexample.dto.comment.CommentResponseDto;
 import dev.shulika.restapiexample.model.Comment;
 import org.mapstruct.*;
 

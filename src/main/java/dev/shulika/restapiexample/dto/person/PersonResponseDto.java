@@ -1,4 +1,4 @@
-package dev.shulika.restapiexample.dto;
+package dev.shulika.restapiexample.dto.person;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

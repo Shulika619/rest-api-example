@@ -1,9 +1,9 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.TaskExecutorRequestDto;
-import dev.shulika.restapiexample.dto.TaskRequestDto;
-import dev.shulika.restapiexample.dto.TaskResponseDto;
-import dev.shulika.restapiexample.dto.TaskStatusRequestDto;
+import dev.shulika.restapiexample.dto.task.TaskExecutorRequestDto;
+import dev.shulika.restapiexample.dto.task.TaskRequestDto;
+import dev.shulika.restapiexample.dto.task.TaskResponseDto;
+import dev.shulika.restapiexample.dto.task.TaskStatusRequestDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.TaskMapper;
 import dev.shulika.restapiexample.model.Person;

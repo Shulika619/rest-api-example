@@ -1,4 +1,4 @@
-package dev.shulika.restapiexample.dto;
+package dev.shulika.restapiexample.dto.task;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

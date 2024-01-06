@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.PersonRequestDto;
-import dev.shulika.restapiexample.dto.PersonResponseDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.exception.AlreadyExistsException;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.PersonMapper;

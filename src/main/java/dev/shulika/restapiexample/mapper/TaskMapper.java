@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.mapper;
 
-import dev.shulika.restapiexample.dto.TaskRequestDto;
-import dev.shulika.restapiexample.dto.TaskResponseDto;
+import dev.shulika.restapiexample.dto.task.TaskRequestDto;
+import dev.shulika.restapiexample.dto.task.TaskResponseDto;
 import dev.shulika.restapiexample.model.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,6 +16,7 @@ public interface TaskMapper {
     Task toEntity(TaskRequestDto taskRequestDto);
 
     @Mapping(source = "author.id", target = "authorId")
+    @Mapping(source = "executor.id", target = "executorId")
     TaskResponseDto toDto(Task task);
 
 }

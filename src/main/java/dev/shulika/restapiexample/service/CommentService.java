@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.service;
 
-import dev.shulika.restapiexample.dto.CommentRequestDto;
-import dev.shulika.restapiexample.dto.CommentResponseDto;
+import dev.shulika.restapiexample.dto.comment.CommentRequestDto;
+import dev.shulika.restapiexample.dto.comment.CommentResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

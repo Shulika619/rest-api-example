@@ -1,4 +1,4 @@
-package dev.shulika.restapiexample.dto;
+package dev.shulika.restapiexample.dto.person;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.controller;
 
-import dev.shulika.restapiexample.dto.PersonRequestDto;
-import dev.shulika.restapiexample.dto.PersonResponseDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.service.PersonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

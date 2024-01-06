@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.service;
 
-import dev.shulika.restapiexample.dto.PersonRequestDto;
-import dev.shulika.restapiexample.dto.PersonResponseDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

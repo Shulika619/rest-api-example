@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.mapper;
 
-import dev.shulika.restapiexample.dto.PersonRequestDto;
-import dev.shulika.restapiexample.dto.PersonResponseDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.model.Person;
 import org.mapstruct.*;
 

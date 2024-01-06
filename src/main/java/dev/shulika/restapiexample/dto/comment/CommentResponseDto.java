@@ -1,4 +1,4 @@
-package dev.shulika.restapiexample.dto;
+package dev.shulika.restapiexample.dto.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
