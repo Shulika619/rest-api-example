@@ -41,7 +41,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskWithCommentDto findByIdWithComments(Long id) {
         log.info("IN TaskServiceImpl - findByIdWithComments() - STARTED");
-        Task task = taskRepository.findById(id)
+        Task task = taskRepository.findByIdWithComments(id)
                 .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
         return taskMapper.toDtoWithComment(task);
     }
