@@ -28,6 +28,12 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<TaskWithCommentDto> getByIdWithComments(@Valid @PathVariable Long id) {
+        TaskWithCommentDto taskWithCommentDto = taskService.findByIdWithComments(id);
+        return new ResponseEntity<>(taskWithCommentDto, HttpStatus.OK);
+    }
+
     @GetMapping("/authors/{personId}")
     public Page<TaskResponseDto> getByAuthorId(@Valid @PathVariable Long personId, Pageable pageable) {
         return taskService.findByAuthor(personId, pageable);

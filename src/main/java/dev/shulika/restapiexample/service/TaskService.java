@@ -10,6 +10,8 @@ public interface TaskService {
 
     TaskResponseDto findById(Long id);
 
+    TaskWithCommentDto findByIdWithComments(Long id);
+
     Page<TaskResponseDto> findByAuthor(Long personId, Pageable pageable);
 
     Page<TaskWithCommentDto> findByAuthorWithComments(Long personId, Pageable pageable);
