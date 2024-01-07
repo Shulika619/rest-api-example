@@ -1,9 +1,6 @@
 package dev.shulika.restapiexample.service.impl;
 
-import dev.shulika.restapiexample.dto.task.TaskExecutorRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskResponseDto;
-import dev.shulika.restapiexample.dto.task.TaskStatusRequestDto;
+import dev.shulika.restapiexample.dto.task.*;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.TaskMapper;
 import dev.shulika.restapiexample.model.Person;
@@ -46,6 +43,13 @@ public class TaskServiceImpl implements TaskService {
         log.info("IN TaskServiceImpl - findByAuthor() - STARTED");
         Page<Task> taskPage = taskRepository.findByAuthorId(personId, pageable);
         return taskPage.map(taskMapper::toDto);
+    }
+
+    @Override
+    public Page<TaskWithCommentDto> findByAuthorWithComments(Long personId, Pageable pageable) {
+        log.info("IN TaskServiceImpl - findByAuthorWithComments() - STARTED");
+        Page<Task> taskPage = taskRepository.findByAuthorIdWithComments(personId, pageable);
+        return taskPage.map(taskMapper::toDtoWithComment);
     }
 
     @Override

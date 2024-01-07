@@ -1,9 +1,6 @@
 package dev.shulika.restapiexample.service;
 
-import dev.shulika.restapiexample.dto.task.TaskExecutorRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskResponseDto;
-import dev.shulika.restapiexample.dto.task.TaskStatusRequestDto;
+import dev.shulika.restapiexample.dto.task.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -14,6 +11,8 @@ public interface TaskService {
     TaskResponseDto findById(Long id);
 
     Page<TaskResponseDto> findByAuthor(Long personId, Pageable pageable);
+
+    Page<TaskWithCommentDto> findByAuthorWithComments(Long personId, Pageable pageable);
 
     Page<TaskResponseDto> findByExecutor(Long personId, Pageable pageable);
 

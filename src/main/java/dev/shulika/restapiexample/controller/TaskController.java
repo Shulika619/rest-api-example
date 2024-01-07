@@ -1,9 +1,6 @@
 package dev.shulika.restapiexample.controller;
 
-import dev.shulika.restapiexample.dto.task.TaskExecutorRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskRequestDto;
-import dev.shulika.restapiexample.dto.task.TaskResponseDto;
-import dev.shulika.restapiexample.dto.task.TaskStatusRequestDto;
+import dev.shulika.restapiexample.dto.task.*;
 import dev.shulika.restapiexample.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,11 @@ public class TaskController {
     @GetMapping("/authors/{personId}")
     public Page<TaskResponseDto> getByAuthorId(@Valid @PathVariable Long personId, Pageable pageable) {
         return taskService.findByAuthor(personId, pageable);
+    }
+
+    @GetMapping("/authors/{personId}/comments")
+    public Page<TaskWithCommentDto> getByAuthorIdWithComments(@Valid @PathVariable Long personId, Pageable pageable) {
+        return taskService.findByAuthorWithComments(personId, pageable);
     }
 
     @GetMapping("/executors/{personId}")
