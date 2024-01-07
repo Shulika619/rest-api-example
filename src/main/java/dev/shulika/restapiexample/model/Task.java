@@ -3,6 +3,7 @@ package dev.shulika.restapiexample.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Task {
     private Person executor;
 
     @OneToMany(mappedBy = "task", fetch = FetchType.LAZY, orphanRemoval = true)
+    @BatchSize(size = 50)
     private List<Comment> comments = new ArrayList<>();
 
 }

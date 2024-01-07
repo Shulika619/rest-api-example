@@ -16,6 +16,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
     @Query(value = "select t from Task t left join fetch t.comments c where t.id = ?1 ")
     Optional<Task> findByIdWithComments(Long id);
 
-    @Query(value = "select t from Task t left join fetch t.comments c where t.author.id = ?1 ")
+    /**
+     * Without join fetch + @BatchSize(size = 50) @OneToMany List<Comment> comments in Task
+     * @Query(value = "select t from Task t left join fetch t.comments c where t.author.id = ?1 ")
+     * join fetch WARN -> HHH90003004: firstResult/maxResults specified with collection fetch; applying in memory
+     */
+    @Query(value = "select t from Task t where t.author.id = ?1 ")
     Page<Task> findByAuthorIdWithComments(Long id, Pageable pageable);
 }
