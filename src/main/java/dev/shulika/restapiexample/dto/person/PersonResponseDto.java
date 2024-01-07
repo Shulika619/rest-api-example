@@ -1,16 +1,10 @@
 package dev.shulika.restapiexample.dto.person;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Value;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Value
 public class PersonResponseDto implements Serializable {
 
     Long id;

@@ -3,18 +3,12 @@ package dev.shulika.restapiexample.dto.comment;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Value;
 import org.hibernate.validator.constraints.Length;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Value
 public class CommentRequestDto implements Serializable {
 
     @NotBlank(message = "Text is mandatory")

@@ -2,15 +2,12 @@ package dev.shulika.restapiexample.dto.task;
 
 import dev.shulika.restapiexample.model.Priority;
 import dev.shulika.restapiexample.model.Status;
-import lombok.*;
+import lombok.Value;
 
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Value
 public class TaskWithCommentDto implements Serializable {
 
     Long id;
@@ -22,10 +19,7 @@ public class TaskWithCommentDto implements Serializable {
     Long executorId;
     List<CommentDto> comments;
 
-    @Getter
-    @Setter
-    @AllArgsConstructor
-    @NoArgsConstructor
+    @Value
     public static class CommentDto implements Serializable {
         Long id;
         String text;
