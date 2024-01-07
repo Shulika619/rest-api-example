@@ -31,12 +31,12 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/author/{personId}")
+    @GetMapping("/authors/{personId}")
     public Page<TaskResponseDto> getByAuthorId(@Valid @PathVariable Long personId, Pageable pageable) {
         return taskService.findByAuthor(personId, pageable);
     }
 
-    @GetMapping("/executor/{personId}")
+    @GetMapping("/executors/{personId}")
     public Page<TaskResponseDto> getByExecutorId(@Valid @PathVariable Long personId, Pageable pageable) {
         return taskService.findByExecutor(personId, pageable);
     }

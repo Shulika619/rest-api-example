@@ -29,7 +29,7 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
-    @GetMapping("/task/{taskId}")
+    @GetMapping("/tasks/{taskId}")
     public Page<CommentResponseDto> getById(@Valid @PathVariable Long taskId, Pageable pageable) {
         return commentService.findByTaskId(taskId, pageable);
     }
