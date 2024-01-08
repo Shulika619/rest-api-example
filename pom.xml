@@ -12,7 +12,7 @@
 
     <groupId>dev.shulika</groupId>
     <artifactId>rest-api-example</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
     <name>rest-api-example</name>
     <description>rest-api-example</description>
 
