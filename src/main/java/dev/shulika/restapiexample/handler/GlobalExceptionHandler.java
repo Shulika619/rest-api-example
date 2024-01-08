@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<List<String>> handleValidException(MethodArgumentNotValidException exception) {
         log.error("IN GlobalExceptionHandler - MethodArgumentNotValidException - Message - {}", exception.getMessage());
         List<String> errorsList = new ArrayList<>();
@@ -27,24 +29,28 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleNotFoundException(NotFoundException exception) {
         log.error("IN GlobalExceptionHandler - NotFoundException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(AlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleAlreadyExistsException(AlreadyExistsException exception) {
         log.error("IN GlobalExceptionHandler - AlreadyExistsException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<String> handleAlreadyExistsException(DataIntegrityViolationException exception) {
         log.error("IN GlobalExceptionHandler - DataIntegrityViolationException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(exception.getMostSpecificCause().getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleException(Exception exception) {
         log.error("IN GlobalExceptionHandler - Exception - Message - {}", exception.getMessage(), exception);
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
