@@ -21,7 +21,6 @@ public class OpenAPIConfig {
                         .version("0.0.1")
                         .description("Simple REST API example")
                         .contact(new Contact().email("shulika619@gmail.com").name("Sergey Shulika").url("https://github.com/Shulika619"))
-
                 );
     }
 
