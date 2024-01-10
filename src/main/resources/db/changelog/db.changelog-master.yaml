@@ -1,3 +1,5 @@
 databaseChangeLog:
   - include:
       file: db/changelog/2024/01/04-01-init.sql
+  - include:
+      file: db/changelog/2024/01/10-01-edit-person.sql
