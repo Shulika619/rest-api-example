@@ -27,28 +27,28 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException exception) {
-        log.error("IN GlobalExceptionHandler - handleBadCredentialsException - Message - {}", exception.getMessage());
+        log.error("IN GlobalExceptionHandler - BadCredentialsException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(BAD_CREDENTIALS, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException exception) {
-        log.error("IN GlobalExceptionHandler - handleAccessDeniedException - Message - {}", exception.getMessage());
+        log.error("IN GlobalExceptionHandler - AccessDeniedException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(SignatureException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> handleSignatureException(SignatureException exception) {
-        log.error("IN GlobalExceptionHandler - handleSignatureException - Message - {}", exception.getMessage());
+        log.error("IN GlobalExceptionHandler - SignatureException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(SIGNATURE_JWT, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException exception) {
-        log.error("IN GlobalExceptionHandler - handleExpiredJwtException - Message - {}", exception.getMessage());
+        log.error("IN GlobalExceptionHandler - ExpiredJwtException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(EXPIRED_JWT, HttpStatus.FORBIDDEN);
     }
 
