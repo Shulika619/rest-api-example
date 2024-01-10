@@ -12,10 +12,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_EXIST;
-import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND;
+import static dev.shulika.restapiexample.constant.ServiceConst.*;
 
 
 @Service
@@ -25,6 +27,16 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+
+    public UserDetailsService personDetailsService() {
+        return new UserDetailsService() {
+            @Override
+            public UserDetails loadUserByUsername(String username) {
+                return personRepository.findByEmail(username)
+                        .orElseThrow(() -> new UsernameNotFoundException(PERSON_NOT_FOUND_EMAIL));
+            }
+        };
+    }
 
     @Override
     public Page<PersonResponseDto> findAll(Pageable pageable) {
@@ -39,16 +51,6 @@ public class PersonServiceImpl implements PersonService {
         Person person = personRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
         return personMapper.toDto(person);
-    }
-
-    @Override
-    public PersonResponseDto create(PersonRequestDto personRequestDto) {
-        log.info("IN PersonServiceImpl - create() - STARTED");
-        if (personRepository.existsByEmailAllIgnoreCase(personRequestDto.getEmail())) {
-            throw new AlreadyExistsException(PERSON_EXIST + personRequestDto.getEmail());
-        }
-        Person result = personRepository.save(personMapper.toEntity(personRequestDto));
-        return personMapper.toDto(result);
     }
 
     @Override
