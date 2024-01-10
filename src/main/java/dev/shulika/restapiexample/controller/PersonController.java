@@ -4,6 +4,7 @@ import dev.shulika.restapiexample.dto.person.PersonRequestDto;
 import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -11,12 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/persons")
 @Tag(name = "Person", description = "Person management APIs")
+@SecurityRequirement(name = "bearerAuth")
 public class PersonController {
 
     private final PersonService personService;
@@ -34,13 +37,6 @@ public class PersonController {
         return new ResponseEntity<>(personRequestDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Create a person", description = "Allows you to create a person")
-    @PostMapping
-    public ResponseEntity<PersonResponseDto> create(@Valid @RequestBody PersonRequestDto personRequestDto) {
-        PersonResponseDto personResponseDto = personService.create(personRequestDto);
-        return new ResponseEntity<>(personResponseDto, HttpStatus.CREATED);
-    }
-
     @Operation(summary = "Update a person", description = "Allows you to update a person by its id")
     @PutMapping("/{id}")
     public ResponseEntity<PersonResponseDto> update(
@@ -51,7 +47,9 @@ public class PersonController {
         return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete a person", description = "Allows you to delete a person by its id")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Delete a person",
+            description = "Allows you to delete a person by its id. Can only be used by persons with the ADMIN role")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@Valid @PathVariable Long id) {
