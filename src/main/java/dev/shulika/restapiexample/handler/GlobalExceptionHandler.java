@@ -2,6 +2,8 @@ package dev.shulika.restapiexample.handler;
 
 import dev.shulika.restapiexample.exception.AlreadyExistsException;
 import dev.shulika.restapiexample.exception.NotFoundException;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -16,8 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.ArrayList;
 import java.util.List;
 
-import static dev.shulika.restapiexample.constant.ServiceConst.ACCESS_DENIED;
-import static dev.shulika.restapiexample.constant.ServiceConst.BAD_CREDENTIALS;
+import static dev.shulika.restapiexample.constant.ServiceConst.*;
 
 @RestControllerAdvice
 @Slf4j
@@ -31,11 +32,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-//    @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException exception) {
         log.error("IN GlobalExceptionHandler - handleAccessDeniedException - Message - {}", exception.getMessage());
         return new ResponseEntity<>(ACCESS_DENIED, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> handleSignatureException(SignatureException exception) {
+        log.error("IN GlobalExceptionHandler - handleSignatureException - Message - {}", exception.getMessage());
+        return new ResponseEntity<>(SIGNATURE_JWT, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<String> handleExpiredJwtException(ExpiredJwtException exception) {
+        log.error("IN GlobalExceptionHandler - handleExpiredJwtException - Message - {}", exception.getMessage());
+        return new ResponseEntity<>(EXPIRED_JWT, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
