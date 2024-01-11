@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -36,8 +37,7 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
-    @Operation(
-            summary = "Get task with comments",
+    @Operation(summary = "Get task with comments",
             description = "Provides task with all its comments by id")
     @GetMapping("/{id}/comments")
     public ResponseEntity<TaskWithCommentDto> getByIdWithComments(@Valid @PathVariable Long id) {
@@ -82,7 +82,9 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update task", description = "Allows you to update a task by its id")
+    @Operation(summary = "Update task",
+            description = "Only the task author or a person with the ADMIN role can update a task by id.")
+    @PostAuthorize("returnObject.body.authorId == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDto> update(
             @Valid @PathVariable Long id,
@@ -94,7 +96,8 @@ public class TaskController {
 
     @Operation(
             summary = "Update task status",
-            description = "Allows you to update the status of a task by id")
+            description = "Only the author, executor or person with the admin role can update the status of a task by id")
+    @PostAuthorize("returnObject.body.authorId == authentication.principal.id or returnObject.body.executorId == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}/status")
     public ResponseEntity<TaskResponseDto> updateStatus(
             @Valid @PathVariable Long id,
@@ -116,7 +119,8 @@ public class TaskController {
         return new ResponseEntity<>(taskResponseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete task", description = "Allows you to delete a task by its id")
+    @Operation(summary = "Delete task",
+            description = "Only the author or person with the admin role can delete a task by id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@Valid @PathVariable Long id) {

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -41,7 +42,7 @@ public class CommentController {
             summary = "Get comments by task id",
             description = "Provides all comments with the specified task id, supports pagination and filtering")
     @GetMapping("/tasks/{taskId}")
-    public Page<CommentResponseDto> getById(@Valid @PathVariable Long taskId, @ParameterObject Pageable pageable) {
+    public Page<CommentResponseDto> getByTaskId(@Valid @PathVariable Long taskId, @ParameterObject Pageable pageable) {
         return commentService.findByTaskId(taskId, pageable);
     }
 
@@ -52,7 +53,9 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update comment", description = "Allows you to update a comment by its id")
+    @Operation(summary = "Update comment",
+            description = "Only a person with the ADMIN role can update a comment by ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> update(
             @Valid @PathVariable Long id,
@@ -61,7 +64,9 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete comment", description = "Allows you to delete a comment by its id")
+    @Operation(summary = "Delete comment",
+            description = "Only a person with the ADMIN role can delete a comment by ID")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@Valid @PathVariable Long id) {

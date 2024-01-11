@@ -38,7 +38,9 @@ public class PersonController {
         return new ResponseEntity<>(personRequestDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Update person", description = "Allows you to update a person by its id")
+    @Operation(summary = "Update person",
+            description = "Only the person himself or a person with the ADMIN role can update a user by ID")
+    @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PersonResponseDto> update(
             @Valid @PathVariable Long id,
@@ -48,10 +50,9 @@ public class PersonController {
         return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-//    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete person",
-            description = "Allows you to delete a person by its id. Can only be used by persons with the ADMIN role")
+            description = "Only the person himself or a person with the ADMIN role can delete a user by ID")
+    @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@Valid @PathVariable Long id) {
