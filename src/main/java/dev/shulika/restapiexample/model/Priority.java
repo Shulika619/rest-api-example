@@ -1,7 +1,7 @@
 package dev.shulika.restapiexample.model;
 
 public enum Priority {
-    HIGH,
+    LOW,
     MIDDLE,
-    LOW
+    HIGH
 }
