@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND;
@@ -26,6 +27,7 @@ public class PersonServiceImpl implements PersonService {
 
     private final PersonRepository personRepository;
     private final PersonMapper personMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public UserDetailsService personDetailsService() {
         return username -> personRepository.findByEmail(username)
@@ -56,7 +58,7 @@ public class PersonServiceImpl implements PersonService {
         person.setFirstName(personRequestDto.getFirstName());
         person.setLastName(personRequestDto.getLastName());
         person.setEmail(personRequestDto.getEmail());
-        person.setPassword(personRequestDto.getPassword());
+        person.setPassword(passwordEncoder.encode(personRequestDto.getPassword()));
 
         Person savedPerson = personRepository.save(person);
         return personMapper.toDto(savedPerson);
