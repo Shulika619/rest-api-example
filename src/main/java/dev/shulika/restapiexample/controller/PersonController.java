@@ -30,14 +30,14 @@ public class PersonController {
         return personService.findAll(pageable);
     }
 
-    @Operation(summary = "Get a person", description = "Provides person by id")
+    @Operation(summary = "Get person", description = "Provides person by id")
     @GetMapping("/{id}")
     public ResponseEntity<PersonResponseDto> getById(@Valid @PathVariable Long id) {
         PersonResponseDto personRequestDto = personService.findById(id);
         return new ResponseEntity<>(personRequestDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Update a person", description = "Allows you to update a person by its id")
+    @Operation(summary = "Update person", description = "Allows you to update a person by its id")
     @PutMapping("/{id}")
     public ResponseEntity<PersonResponseDto> update(
             @Valid @PathVariable Long id,
@@ -48,7 +48,7 @@ public class PersonController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @Operation(summary = "Delete a person",
+    @Operation(summary = "Delete person",
             description = "Allows you to delete a person by its id. Can only be used by persons with the ADMIN role")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

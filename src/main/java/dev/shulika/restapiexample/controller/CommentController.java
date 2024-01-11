@@ -29,7 +29,7 @@ public class CommentController {
         return commentService.findAll(pageable);
     }
 
-    @Operation(summary = "Get a comment", description = "Provides comment by id")
+    @Operation(summary = "Get comment", description = "Provides comment by id")
     @GetMapping("/{id}")
     public ResponseEntity<CommentResponseDto> getById(@Valid @PathVariable Long id) {
         CommentResponseDto commentResponseDto = commentService.findById(id);
@@ -44,14 +44,14 @@ public class CommentController {
         return commentService.findByTaskId(taskId, pageable);
     }
 
-    @Operation(summary = "Create a comment", description = "Allows you to create a comment")
+    @Operation(summary = "Create comment", description = "Allows you to create a comment")
     @PostMapping
     public ResponseEntity<CommentResponseDto> create(@Valid @RequestBody CommentRequestDto commentRequestDto) {
         CommentResponseDto commentResponseDto = commentService.create(commentRequestDto);
         return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Update a comment", description = "Allows you to update a comment by its id")
+    @Operation(summary = "Update comment", description = "Allows you to update a comment by its id")
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> update(
             @Valid @PathVariable Long id,
@@ -60,7 +60,7 @@ public class CommentController {
         return new ResponseEntity<>(commentResponseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete a comment", description = "Allows you to delete a comment by its id")
+    @Operation(summary = "Delete comment", description = "Allows you to delete a comment by its id")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@Valid @PathVariable Long id) {

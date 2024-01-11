@@ -2,7 +2,6 @@ package dev.shulika.restapiexample.service.impl;
 
 import dev.shulika.restapiexample.dto.person.PersonRequestDto;
 import dev.shulika.restapiexample.dto.person.PersonResponseDto;
-import dev.shulika.restapiexample.exception.AlreadyExistsException;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.PersonMapper;
 import dev.shulika.restapiexample.model.Person;
@@ -12,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import static dev.shulika.restapiexample.constant.ServiceConst.*;
+import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND;
+import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND_EMAIL;
 
 
 @Service
@@ -29,13 +28,8 @@ public class PersonServiceImpl implements PersonService {
     private final PersonMapper personMapper;
 
     public UserDetailsService personDetailsService() {
-        return new UserDetailsService() {
-            @Override
-            public UserDetails loadUserByUsername(String username) {
-                return personRepository.findByEmail(username)
-                        .orElseThrow(() -> new UsernameNotFoundException(PERSON_NOT_FOUND_EMAIL));
-            }
-        };
+        return username -> personRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException(PERSON_NOT_FOUND_EMAIL));
     }
 
     @Override
