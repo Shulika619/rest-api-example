@@ -48,7 +48,8 @@ public class PersonController {
         return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Delete person",
             description = "Allows you to delete a person by its id. Can only be used by persons with the ADMIN role")
     @DeleteMapping("/{id}")
