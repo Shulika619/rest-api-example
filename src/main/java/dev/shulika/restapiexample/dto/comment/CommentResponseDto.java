@@ -3,6 +3,7 @@ package dev.shulika.restapiexample.dto.comment;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Value
 public class CommentResponseDto implements Serializable {
@@ -12,5 +13,9 @@ public class CommentResponseDto implements Serializable {
     String text;
 
     Long taskId;
+
+    LocalDateTime createdAt;
+
+    LocalDateTime updatedAt;
 
 }

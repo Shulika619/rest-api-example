@@ -5,6 +5,7 @@ import dev.shulika.restapiexample.model.Status;
 import lombok.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Value
 public class TaskResponseDto implements Serializable {
@@ -22,5 +23,9 @@ public class TaskResponseDto implements Serializable {
     Long authorId;
 
     Long executorId;
+
+    LocalDateTime createdAt;
+
+    LocalDateTime updatedAt;
 
 }
