@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -24,7 +25,7 @@ public class TaskController {
 
     @Operation(summary = "Get tasks", description = "Provides all tasks, supports pagination and filtering")
     @GetMapping
-    public Page<TaskResponseDto> getAll(Pageable pageable) {
+    public Page<TaskResponseDto> getAll(@ParameterObject Pageable pageable) {
         return taskService.findAll(pageable);
     }
 
@@ -48,7 +49,9 @@ public class TaskController {
             summary = "Get author tasks",
             description = "Provides all author tasks by id(person), supports pagination and filtering")
     @GetMapping("/authors/{personId}")
-    public Page<TaskResponseDto> getByAuthorId(@Valid @PathVariable Long personId, Pageable pageable) {
+    public Page<TaskResponseDto> getByAuthorId(
+            @Valid @PathVariable Long personId,
+            @ParameterObject Pageable pageable) {
         return taskService.findByAuthor(personId, pageable);
     }
 
@@ -56,7 +59,9 @@ public class TaskController {
             summary = "Get author tasks with comments",
             description = "Provides all author tasks with comments by id(person), supports pagination and filtering")
     @GetMapping("/authors/{personId}/comments")
-    public Page<TaskWithCommentDto> getByAuthorIdWithComments(@Valid @PathVariable Long personId, Pageable pageable) {
+    public Page<TaskWithCommentDto> getByAuthorIdWithComments(
+            @Valid @PathVariable Long personId,
+            @ParameterObject Pageable pageable) {
         return taskService.findByAuthorWithComments(personId, pageable);
     }
 
@@ -64,7 +69,9 @@ public class TaskController {
             summary = "Get executor tasks",
             description = "Provides all executor tasks by id(person), supports pagination and filtering")
     @GetMapping("/executors/{personId}")
-    public Page<TaskResponseDto> getByExecutorId(@Valid @PathVariable Long personId, Pageable pageable) {
+    public Page<TaskResponseDto> getByExecutorId(
+            @Valid @PathVariable Long personId,
+            @ParameterObject Pageable pageable) {
         return taskService.findByExecutor(personId, pageable);
     }
 

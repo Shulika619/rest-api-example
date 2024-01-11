@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class CommentController {
 
     @Operation(summary = "Get comments", description = "Provides all comments, supports pagination and filtering")
     @GetMapping
-    public Page<CommentResponseDto> getAll(Pageable pageable) {
+    public Page<CommentResponseDto> getAll(@ParameterObject Pageable pageable) {
         return commentService.findAll(pageable);
     }
 
@@ -40,7 +41,7 @@ public class CommentController {
             summary = "Get comments by task id",
             description = "Provides all comments with the specified task id, supports pagination and filtering")
     @GetMapping("/tasks/{taskId}")
-    public Page<CommentResponseDto> getById(@Valid @PathVariable Long taskId, Pageable pageable) {
+    public Page<CommentResponseDto> getById(@Valid @PathVariable Long taskId, @ParameterObject Pageable pageable) {
         return commentService.findByTaskId(taskId, pageable);
     }
 
