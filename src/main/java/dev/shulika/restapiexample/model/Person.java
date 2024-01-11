@@ -39,7 +39,7 @@ public class Person implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    Role role = Role.USER;
+    Role role;
 
     @CreationTimestamp
     @Column(name = "created_at")
