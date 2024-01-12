@@ -80,10 +80,9 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void deleteById(Long id) {
         log.info("IN PersonServiceImpl - deleteById() - STARTED");
-        if (!personRepository.existsById(id)) {
-            throw new NotFoundException(PERSON_NOT_FOUND + id);
-        }
-        personRepository.deleteById(id);
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
+        personRepository.delete(person);
     }
 
 }

@@ -11,10 +11,14 @@ import dev.shulika.restapiexample.repository.CommentRepository;
 import dev.shulika.restapiexample.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import static dev.shulika.restapiexample.constant.CacheConst.COMMENTS;
 import static dev.shulika.restapiexample.constant.ServiceConst.COMMENT_NOT_FOUND;
 
 @Service
@@ -33,6 +37,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Cacheable(value = COMMENTS, key = "#id")
     public CommentResponseDto findById(Long id) {
         log.info("IN CommentServiceImpl - findById() - STARTED");
         Comment comment = commentRepository.findById(id)
@@ -55,6 +60,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CachePut(value = COMMENTS, key = "#id")
     public CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - updateById() - STARTED");
         Comment comment = commentRepository.findById(id)
@@ -73,12 +79,12 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = COMMENTS, key = "#id")
     public void deleteById(Long id) {
         log.info("IN CommentServiceImpl - deleteById() - STARTED");
-        if (!commentRepository.existsById(id)) {
-            throw new NotFoundException(COMMENT_NOT_FOUND + id);
-        }
-        commentRepository.deleteById(id);
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND + id));
+        commentRepository.delete(comment);
     }
 
 }

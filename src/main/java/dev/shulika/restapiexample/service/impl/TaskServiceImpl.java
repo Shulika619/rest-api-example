@@ -118,14 +118,12 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(savedTask);
     }
 
-
     @Override
     public void deleteById(Long id) {
         log.info("IN TaskServiceImpl - deleteById() - STARTED");
-        if (!taskRepository.existsById(id)) {
-            throw new NotFoundException(TASK_NOT_FOUND + id);
-        }
-        taskRepository.deleteById(id);
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
+        taskRepository.delete(task);
     }
 
 }
