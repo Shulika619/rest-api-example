@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.service;
 
 import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestRoleDto;
 import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,8 @@ public interface PersonService {
     PersonResponseDto findById(Long id);
 
     PersonResponseDto updateById(Long id, PersonRequestDto personRequestDto);
+
+    PersonResponseDto updateRoleById(Long id, PersonRequestRoleDto personRequestRoleDto);
 
     void deleteById(Long id);
 

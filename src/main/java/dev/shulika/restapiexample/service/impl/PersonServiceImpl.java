@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.service.impl;
 
 import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestRoleDto;
 import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.PersonMapper;
@@ -60,6 +61,17 @@ public class PersonServiceImpl implements PersonService {
         person.setEmail(personRequestDto.getEmail());
         person.setPassword(passwordEncoder.encode(personRequestDto.getPassword()));
 
+        Person savedPerson = personRepository.save(person);
+        return personMapper.toDto(savedPerson);
+    }
+
+    @Override
+    public PersonResponseDto updateRoleById(Long id, PersonRequestRoleDto personRequestRoleDto) {
+        log.info("IN PersonServiceImpl - updateRoleById() - STARTED");
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
+
+        person.setRole(personRequestRoleDto.getRole());
         Person savedPerson = personRepository.save(person);
         return personMapper.toDto(savedPerson);
     }

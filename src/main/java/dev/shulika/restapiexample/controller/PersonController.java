@@ -1,6 +1,7 @@
 package dev.shulika.restapiexample.controller;
 
 import dev.shulika.restapiexample.dto.person.PersonRequestDto;
+import dev.shulika.restapiexample.dto.person.PersonRequestRoleDto;
 import dev.shulika.restapiexample.dto.person.PersonResponseDto;
 import dev.shulika.restapiexample.service.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +40,7 @@ public class PersonController {
     }
 
     @Operation(summary = "Update person",
-            description = "Only the person himself or a person with the ADMIN role can update a user by ID")
+            description = "Only the person himself or a person with the ADMIN role can update a user by id")
     @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<PersonResponseDto> update(
@@ -50,8 +51,20 @@ public class PersonController {
         return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
+    @Operation(summary = "Update person role",
+            description = "Only a person with the ADMIN role can update a user role by id")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/{id}/role")
+    public ResponseEntity<PersonResponseDto> updateRole(
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody PersonRequestRoleDto personRequestRoleDto
+    ) {
+        PersonResponseDto personResponseDto = personService.updateRoleById(id, personRequestRoleDto);
+        return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
+    }
+
     @Operation(summary = "Delete person",
-            description = "Only the person himself or a person with the ADMIN role can delete a user by ID")
+            description = "Only the person himself or a person with the ADMIN role can delete a user by id")
     @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

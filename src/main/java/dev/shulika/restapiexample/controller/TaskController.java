@@ -83,7 +83,7 @@ public class TaskController {
     }
 
     @Operation(summary = "Update task",
-            description = "Only the task author or a person with the ADMIN role can update a task by id.")
+            description = "Only the task author or a person with the ADMIN role can update a task by id")
     @PostAuthorize("returnObject.body.authorId == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<TaskResponseDto> update(
