@@ -5,6 +5,7 @@ import dev.shulika.restapiexample.dto.comment.CommentResponseDto;
 import dev.shulika.restapiexample.exception.NotFoundException;
 import dev.shulika.restapiexample.mapper.CommentMapper;
 import dev.shulika.restapiexample.model.Comment;
+import dev.shulika.restapiexample.model.Person;
 import dev.shulika.restapiexample.model.Task;
 import dev.shulika.restapiexample.repository.CommentRepository;
 import dev.shulika.restapiexample.service.CommentService;
@@ -60,6 +61,9 @@ public class CommentServiceImpl implements CommentService {
                 .orElseThrow(() -> new NotFoundException(COMMENT_NOT_FOUND + id));
 
         comment.setText(commentRequestDto.getText());
+        Person author = new Person();
+        author.setId(commentRequestDto.getAuthorId());
+        comment.setAuthor(author);
         Task task = new Task();
         task.setId(commentRequestDto.getTaskId());
         comment.setTask(task);

@@ -12,6 +12,8 @@ public class CommentResponseDto implements Serializable {
 
     String text;
 
+    Long authorId;
+
     Long taskId;
 
     LocalDateTime createdAt;

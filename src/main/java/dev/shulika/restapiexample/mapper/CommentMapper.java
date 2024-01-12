@@ -8,9 +8,11 @@ import org.mapstruct.*;
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CommentMapper {
 
+    @Mapping(source = "authorId", target = "author.id")
     @Mapping(source = "taskId", target = "task.id")
     Comment toEntity(CommentRequestDto commentRequestDto);
 
+    @Mapping(source = "author.id", target = "authorId")
     @Mapping(source = "task.id", target = "taskId")
     CommentResponseDto toDto(Comment comment);
 

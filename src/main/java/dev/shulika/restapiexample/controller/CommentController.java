@@ -54,8 +54,8 @@ public class CommentController {
     }
 
     @Operation(summary = "Update comment",
-            description = "Only a person with the ADMIN role can update a comment by ID")
-    @PreAuthorize("hasAuthority('ADMIN')")
+            description = "Only author or a person with the ADMIN role can update a comment by id")
+    @PreAuthorize("#commentRequestDto.authorId == authentication.principal.id or hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<CommentResponseDto> update(
             @Valid @PathVariable Long id,
@@ -65,7 +65,7 @@ public class CommentController {
     }
 
     @Operation(summary = "Delete comment",
-            description = "Only a person with the ADMIN role can delete a comment by ID")
+            description = "Only a person with the ADMIN role can delete a comment by id")
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)

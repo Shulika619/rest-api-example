@@ -15,6 +15,10 @@ public class CommentRequestDto implements Serializable {
     @Length(min = 1, max = 1024, message = "Text must be from 1 to 1024")
     String text;
 
+    @NotNull(message = "Author id is mandatory")
+    @Positive(message = "Author id must be positive Long")
+    Long authorId;
+
     @NotNull(message = "Task id is mandatory")
     @Positive(message = "Task id must be positive Long")
     Long taskId;
