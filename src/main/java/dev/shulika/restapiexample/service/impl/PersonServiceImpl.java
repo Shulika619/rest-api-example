@@ -31,6 +31,7 @@ public class PersonServiceImpl implements PersonService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDetailsService personDetailsService() {
+        log.info("IN PersonServiceImpl - personDetailsService() - STARTED");
         return username -> personRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(PERSON_NOT_FOUND_EMAIL));
     }
