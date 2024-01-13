@@ -33,13 +33,13 @@ Access to the API is authenticated using the jwt token
 - Postgresql
 - Liquibase
 - Validation
+- Mapstruct
+- Lombok
 - JWT
 - Cache
 - OpenAPI Swagger
-- Testcontainers
-- Mapstruct
-- Lombok
 - Docker
+- Testcontainers
 - Maven
 - Git/GitHub
 
