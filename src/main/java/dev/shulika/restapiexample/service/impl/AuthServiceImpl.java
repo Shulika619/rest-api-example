@@ -16,7 +16,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static dev.shulika.restapiexample.constant.ServiceConst.INVALID_EMAIL_PASSWORD;
 import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_EXIST;
 
 @Service
@@ -45,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         person = personRepository.save(person);
-        String jwt = jwtService.generateToken(person);
+        String jwt = jwtService.generateToken(person.getEmail());
         return JwtAuthResponseDto.builder().token(jwt).build();
     }
 
@@ -54,9 +53,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("IN AuthServiceImpl - signIn() - STARTED");
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        Person person = personRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException(INVALID_EMAIL_PASSWORD));
-        String jwt = jwtService.generateToken(person);
+        String jwt = jwtService.generateToken(request.getEmail());
         return JwtAuthResponseDto.builder().token(jwt).build();
     }
 

@@ -12,13 +12,13 @@ public interface JwtService {
 
     String extractUserName(String token);
 
-    String generateToken(UserDetails userDetails);
+    String generateToken(String email);
 
     boolean isTokenValid(String token, UserDetails userDetails);
 
     <T> T extractClaim(String token, Function<Claims, T> claimsResolvers);
 
-    String generateToken(Map<String, Object> extraClaims, UserDetails userDetails);
+    String generateToken(Map<String, Object> extraClaims, String email);
 
     boolean isTokenExpired(String token);
 

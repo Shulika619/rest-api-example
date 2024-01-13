@@ -9,10 +9,14 @@ import dev.shulika.restapiexample.repository.TaskRepository;
 import dev.shulika.restapiexample.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import static dev.shulika.restapiexample.constant.CacheConst.TASKS;
 import static dev.shulika.restapiexample.constant.ServiceConst.TASK_NOT_FOUND;
 
 @Service
@@ -31,6 +35,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Cacheable(value = TASKS, key = "#id")
     public TaskResponseDto findById(Long id) {
         log.info("IN TaskServiceImpl - findById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -75,6 +80,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @CachePut(value = TASKS, key = "#id")
     public TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - updateById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -94,6 +100,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @CachePut(value = TASKS, key = "#id")
     public TaskResponseDto updateStatusById(Long id, TaskStatusRequestDto taskStatusRequestDto) {
         log.info("IN TaskServiceImpl - updateStatusById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -105,6 +112,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @CachePut(value = TASKS, key = "#id")
     public TaskResponseDto updateExecutorById(Long id, TaskExecutorRequestDto taskExecutorRequestDto) {
         log.info("IN TaskServiceImpl - updateExecutorById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -118,14 +126,13 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.toDto(savedTask);
     }
 
-
     @Override
+    @CacheEvict(value = TASKS, key = "#id")
     public void deleteById(Long id) {
         log.info("IN TaskServiceImpl - deleteById() - STARTED");
-        if (!taskRepository.existsById(id)) {
-            throw new NotFoundException(TASK_NOT_FOUND + id);
-        }
-        taskRepository.deleteById(id);
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(TASK_NOT_FOUND + id));
+        taskRepository.delete(task);
     }
 
 }

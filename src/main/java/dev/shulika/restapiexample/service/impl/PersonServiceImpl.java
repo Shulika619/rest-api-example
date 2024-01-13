@@ -10,6 +10,9 @@ import dev.shulika.restapiexample.repository.PersonRepository;
 import dev.shulika.restapiexample.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static dev.shulika.restapiexample.constant.CacheConst.PERSONS;
 import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND;
 import static dev.shulika.restapiexample.constant.ServiceConst.PERSON_NOT_FOUND_EMAIL;
 
@@ -31,6 +35,7 @@ public class PersonServiceImpl implements PersonService {
     private final PasswordEncoder passwordEncoder;
 
     public UserDetailsService personDetailsService() {
+        log.info("IN PersonServiceImpl - personDetailsService() - STARTED");
         return username -> personRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException(PERSON_NOT_FOUND_EMAIL));
     }
@@ -43,6 +48,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @Cacheable(value = PERSONS, key = "#id")
     public PersonResponseDto findById(Long id) {
         log.info("IN PersonServiceImpl - findById() - STARTED");
         Person person = personRepository.findById(id)
@@ -51,6 +57,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @CachePut(value = PERSONS, key = "#id")
     public PersonResponseDto updateById(Long id, PersonRequestDto personRequestDto) {
         log.info("IN PersonServiceImpl - updateById() - STARTED");
         Person person = personRepository.findById(id)
@@ -66,6 +73,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @CachePut(value = PERSONS, key = "#id")
     public PersonResponseDto updateRoleById(Long id, PersonRequestRoleDto personRequestRoleDto) {
         log.info("IN PersonServiceImpl - updateRoleById() - STARTED");
         Person person = personRepository.findById(id)
@@ -77,12 +85,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    @CacheEvict(value = PERSONS, key = "#id")
     public void deleteById(Long id) {
         log.info("IN PersonServiceImpl - deleteById() - STARTED");
-        if (!personRepository.existsById(id)) {
-            throw new NotFoundException(PERSON_NOT_FOUND + id);
-        }
-        personRepository.deleteById(id);
+        Person person = personRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
+        personRepository.delete(person);
     }
 
 }
