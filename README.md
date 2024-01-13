@@ -34,6 +34,7 @@ Access to the API is authenticated using the jwt token
 - Liquibase
 - Validation
 - JWT
+- Cache
 - OpenAPI Swagger
 - Testcontainers
 - Mapstruct
