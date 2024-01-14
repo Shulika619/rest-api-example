@@ -12,13 +12,11 @@ import dev.shulika.restapiexample.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import static dev.shulika.restapiexample.constant.CacheConst.COMMENTS;
+import static dev.shulika.restapiexample.constant.CacheConst.TASKS_COMMENTS;
 import static dev.shulika.restapiexample.constant.ServiceConst.COMMENT_NOT_FOUND;
 
 @Service
@@ -37,7 +35,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Cacheable(value = COMMENTS, key = "#id")
     public CommentResponseDto findById(Long id) {
         log.info("IN CommentServiceImpl - findById() - STARTED");
         Comment comment = commentRepository.findById(id)
@@ -53,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @CacheEvict(value = TASKS_COMMENTS, key = "#commentRequestDto.taskId")
     public CommentResponseDto create(CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - create() - STARTED");
         Comment savedComment = commentRepository.save(commentMapper.toEntity(commentRequestDto));
@@ -60,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @CachePut(value = COMMENTS, key = "#id")
+    @CacheEvict(value = TASKS_COMMENTS, key = "#commentRequestDto.taskId")
     public CommentResponseDto updateById(Long id, CommentRequestDto commentRequestDto) {
         log.info("IN CommentServiceImpl - updateById() - STARTED");
         Comment comment = commentRepository.findById(id)
@@ -79,7 +77,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @CacheEvict(value = COMMENTS, key = "#id")
+    @CacheEvict(value = TASKS_COMMENTS, allEntries = true)
     public void deleteById(Long id) {
         log.info("IN CommentServiceImpl - deleteById() - STARTED");
         Comment comment = commentRepository.findById(id)

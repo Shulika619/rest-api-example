@@ -12,11 +12,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import static dev.shulika.restapiexample.constant.CacheConst.TASKS;
+import static dev.shulika.restapiexample.constant.CacheConst.*;
 import static dev.shulika.restapiexample.constant.ServiceConst.TASK_NOT_FOUND;
 
 @Service
@@ -28,6 +29,7 @@ public class TaskServiceImpl implements TaskService {
     private final TaskMapper taskMapper;
 
     @Override
+    @Cacheable(PAGE_TASKS)
     public Page<TaskResponseDto> findAll(Pageable pageable) {
         log.info("IN TaskServiceImpl - findAll() - STARTED");
         Page<Task> taskPage = taskRepository.findAll(pageable);
@@ -44,6 +46,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Cacheable(value = TASKS_COMMENTS, key = "#id")
     public TaskWithCommentDto findByIdWithComments(Long id) {
         log.info("IN TaskServiceImpl - findByIdWithComments() - STARTED");
         Task task = taskRepository.findByIdWithComments(id)
@@ -52,6 +55,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Cacheable(PAGE_TASKS_AUTHOR)
     public Page<TaskResponseDto> findByAuthor(Long personId, Pageable pageable) {
         log.info("IN TaskServiceImpl - findByAuthor() - STARTED");
         Page<Task> taskPage = taskRepository.findByAuthorId(personId, pageable);
@@ -66,6 +70,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Cacheable(PAGE_TASKS_EXECUTOR)
     public Page<TaskResponseDto> findByExecutor(Long personId, Pageable pageable) {
         log.info("IN TaskServiceImpl - findByExecutor() - STARTED");
         Page<Task> taskPage = taskRepository.findByExecutorId(personId, pageable);
@@ -73,6 +78,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Caching(
+            evict = {
+                    @CacheEvict(value = PAGE_TASKS, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_AUTHOR, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_EXECUTOR, allEntries = true)
+            }
+    )
     public TaskResponseDto create(TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - create() - STARTED");
         Task task = taskRepository.save(taskMapper.toEntity(taskRequestDto));
@@ -80,7 +92,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @CachePut(value = TASKS, key = "#id")
+    @Caching(
+            put = {@CachePut(value = TASKS, key = "#id")},
+            evict = {
+                    @CacheEvict(value = TASKS_COMMENTS, key = "#id"),
+                    @CacheEvict(value = PAGE_TASKS, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_AUTHOR, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_EXECUTOR, allEntries = true)
+            }
+    )
     public TaskResponseDto updateById(Long id, TaskRequestDto taskRequestDto) {
         log.info("IN TaskServiceImpl - updateById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -100,7 +120,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @CachePut(value = TASKS, key = "#id")
+    @Caching(
+            put = {@CachePut(value = TASKS, key = "#id")},
+            evict = {
+                    @CacheEvict(value = TASKS_COMMENTS, key = "#id"),
+                    @CacheEvict(value = PAGE_TASKS, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_AUTHOR, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_EXECUTOR, allEntries = true)
+            }
+    )
     public TaskResponseDto updateStatusById(Long id, TaskStatusRequestDto taskStatusRequestDto) {
         log.info("IN TaskServiceImpl - updateStatusById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -112,7 +140,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @CachePut(value = TASKS, key = "#id")
+    @Caching(
+            put = {@CachePut(value = TASKS, key = "#id")},
+            evict = {
+                    @CacheEvict(value = TASKS_COMMENTS, key = "#id"),
+                    @CacheEvict(value = PAGE_TASKS, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_AUTHOR, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_EXECUTOR, allEntries = true)
+            }
+    )
     public TaskResponseDto updateExecutorById(Long id, TaskExecutorRequestDto taskExecutorRequestDto) {
         log.info("IN TaskServiceImpl - updateExecutorById() - STARTED");
         Task task = taskRepository.findById(id)
@@ -127,7 +163,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    @CacheEvict(value = TASKS, key = "#id")
+    @Caching(
+            evict = {
+                    @CacheEvict(value = TASKS, key = "#id"),
+                    @CacheEvict(value = TASKS_COMMENTS, key = "#id"),
+                    @CacheEvict(value = PAGE_TASKS, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_AUTHOR, allEntries = true),
+                    @CacheEvict(value = PAGE_TASKS_EXECUTOR, allEntries = true)
+            }
+    )
     public void deleteById(Long id) {
         log.info("IN TaskServiceImpl - deleteById() - STARTED");
         Task task = taskRepository.findById(id)
