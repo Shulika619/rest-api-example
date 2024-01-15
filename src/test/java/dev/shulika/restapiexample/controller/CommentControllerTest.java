@@ -158,6 +158,17 @@ class CommentControllerTest {
     }
 
     @Test
+    void testUpdateValidateText() throws Exception {
+        CommentRequestDto commentRequestDto = new CommentRequestDto("", 2L, 2L);
+
+        mockMvc.perform(put("/api/v1/comments/2")
+                        .contentType(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token)
+                        .content(objectMapper.writeValueAsString(commentRequestDto)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$").isNotEmpty());
+    }
+
+    @Test
     void testUpdateAccessDenied() throws Exception {
         CommentRequestDto commentRequestDto = new CommentRequestDto("try comment", 1L, 1L);
 
@@ -182,11 +193,10 @@ class CommentControllerTest {
         assertThat(jwtAuthResponseDto.getToken()).isNotBlank();
         token = jwtAuthResponseDto.getToken();
 
-        int repoSizeBeforeDelete = repoSizeBefore;
         mockMvc.perform(delete("/api/v1/comments/3")
                         .header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
-        assertTrue(commentRepository.findAll().size() < repoSizeBeforeDelete);
+        assertTrue(commentRepository.findAll().size() < repoSizeBefore);
     }
 
     @Test

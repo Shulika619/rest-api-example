@@ -10,7 +10,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -41,7 +40,14 @@ public class SeedDataConfig implements CommandLineRunner {
                     .password(passwordEncoder.encode("123456"))
                     .role(Role.USER)
                     .build();
-            personRepository.saveAll(List.of(admin, test));
+            Person test2 = Person.builder()
+                    .firstName("Test2")
+                    .lastName("Test2")
+                    .email("test2@gmail.com")
+                    .password(passwordEncoder.encode("123456"))
+                    .role(Role.USER)
+                    .build();
+            personRepository.saveAll(List.of(admin, test, test2));
             log.info("+++ IN SeedDataConfig - created ADMIN and TEST person");
         }
 
@@ -80,7 +86,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .author(Person.builder().id(2L).build())
                     .task(Task.builder().id(2L).build())
                     .build();
-            commentRepository.saveAll(List.of(comment1, comment2,comment3));
+            commentRepository.saveAll(List.of(comment1, comment2, comment3));
             log.info("+++ IN SeedDataConfig - created Comments");
         }
 
