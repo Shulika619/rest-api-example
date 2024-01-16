@@ -22,7 +22,7 @@ Access to the API is authenticated using the jwt token
 - `http://localhost:8080/api/v1/signin` to login and receive a token
 
 > [!NOTE]  
-> More information can be found in the documentation
+> More information can be found in the documentation Swagger UI
 
 ## Technologies
 - Java 17
