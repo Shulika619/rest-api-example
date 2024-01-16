@@ -9,7 +9,7 @@ A simple example of REST API development and demonstration of working with popul
 
 - `git clone https://github.com/Shulika619/rest-api-example.git`
 - `cd rest-api-example`
-- `mvnw spring-boot:run`
+- `./mvnw spring-boot:run`
 
 ### Swagger(OpenApi) documentation for API
 - `http://localhost:8080/swagger-ui/index.html`
