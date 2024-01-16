@@ -22,7 +22,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -187,34 +186,6 @@ class PersonControllerTest {
         mockMvc.perform(put("/api/v1/persons/1/role")
                         .contentType(MediaType.APPLICATION_JSON).header("Authorization", "Bearer " + token)
                         .content(objectMapper.writeValueAsString(personRequestRoleDto)))
-                .andExpect(status().isForbidden())
-                .andExpect(jsonPath("$").value("Authorization Failure: Access denied, you dont have permission to access this resource"));
-    }
-
-
-    @Test
-    void testDelete() throws Exception {
-        SignInRequestDto signInRequestDto = new SignInRequestDto("admin@gmail.com", "123456");
-        var result = mockMvc.perform(post("/api/v1/signin")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(signInRequestDto)))
-                .andExpect(status().isOk()).andReturn();
-
-        assertThat(result.getResponse()).isNotNull();
-        var jwtAuthResponseDto = objectMapper.readValue(result.getResponse().getContentAsString(), JwtAuthResponseDto.class);
-        assertThat(jwtAuthResponseDto.getToken()).isNotBlank();
-        token = jwtAuthResponseDto.getToken();
-
-        mockMvc.perform(delete("/api/v1/persons/3")
-                        .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isNoContent());
-        assertTrue(personRepository.findAll().size() < repoSizeBefore);
-    }
-
-    @Test
-    void testDeleteAccessDenied() throws Exception {
-        mockMvc.perform(delete("/api/v1/persons/1")
-                        .header("Authorization", "Bearer " + token).accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(jsonPath("$").value("Authorization Failure: Access denied, you dont have permission to access this resource"));
     }

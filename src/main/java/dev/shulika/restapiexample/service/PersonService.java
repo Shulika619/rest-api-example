@@ -19,6 +19,4 @@ public interface PersonService {
 
     PersonResponseDto updateRoleById(Long id, PersonRequestRoleDto personRequestRoleDto);
 
-    void deleteById(Long id);
-
 }

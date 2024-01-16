@@ -10,7 +10,6 @@ import dev.shulika.restapiexample.repository.PersonRepository;
 import dev.shulika.restapiexample.service.PersonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
@@ -82,15 +81,6 @@ public class PersonServiceImpl implements PersonService {
         person.setRole(personRequestRoleDto.getRole());
         Person savedPerson = personRepository.save(person);
         return personMapper.toDto(savedPerson);
-    }
-
-    @Override
-    @CacheEvict(value = PERSONS, key = "#id")
-    public void deleteById(Long id) {
-        log.info("IN PersonServiceImpl - deleteById() - STARTED");
-        Person person = personRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(PERSON_NOT_FOUND + id));
-        personRepository.delete(person);
     }
 
 }

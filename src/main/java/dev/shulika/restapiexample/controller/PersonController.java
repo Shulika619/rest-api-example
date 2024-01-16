@@ -63,13 +63,4 @@ public class PersonController {
         return new ResponseEntity<>(personResponseDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Delete person",
-            description = "Only the person himself or a person with the ADMIN role can delete a user by id")
-    @PreAuthorize("#id == authentication.principal.id or hasAuthority('ADMIN')")
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@Valid @PathVariable Long id) {
-        personService.deleteById(id);
-    }
-
 }
