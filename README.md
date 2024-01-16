@@ -7,7 +7,7 @@ A simple example of REST API development and demonstration of working with popul
 > The project makes use of Postgres Docker image for database support, so make sure you have the Docker Desktop running on your machine.
 
 
-- `git clone git@github.com:Shulika619/rest-api-example.git`
+- `git clone https://github.com/Shulika619/rest-api-example.git`
 - `cd rest-api-example`
 - `mvnw spring-boot:run`
 
