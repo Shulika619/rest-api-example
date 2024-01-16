@@ -58,6 +58,7 @@ public class SeedDataConfig implements CommandLineRunner {
                     .status(Status.PENDING)
                     .priority(Priority.LOW)
                     .author(Person.builder().id(1L).build())
+                    .executor(Person.builder().id(3L).build())
                     .build();
             Task task2 = Task.builder()
                     .title("Task2")
@@ -66,7 +67,14 @@ public class SeedDataConfig implements CommandLineRunner {
                     .priority(Priority.MIDDLE)
                     .author(Person.builder().id(2L).build())
                     .build();
-            taskRepository.saveAll(List.of(task1, task2));
+            Task task3 = Task.builder()
+                    .title("Task3")
+                    .description("Task3 description")
+                    .status(Status.PROCESS)
+                    .priority(Priority.MIDDLE)
+                    .author(Person.builder().id(3L).build())
+                    .build();
+            taskRepository.saveAll(List.of(task1, task2, task3));
             log.info("+++ IN SeedDataConfig - created Tasks");
         }
 
